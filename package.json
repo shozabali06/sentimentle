@@ -1,0 +1,11 @@
+{
+    "name": "sentimentle",
+    "version": "1.0.0",
+    "description": "Sentimentle - Text Sentiment Analyzer",
+    "private": true,
+    "scripts": {
+      "dev:frontend": "cd frontend && npm run dev",
+      "dev:server": "cd server && npm run dev",
+      "install:all": "npm install && cd frontend && npm install && cd ../server && npm install"
+    }
+  }

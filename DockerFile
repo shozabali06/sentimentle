@@ -1,0 +1,47 @@
+# 1. Base Image: Use Node.js as the foundation
+FROM node:20-slim
+
+# 2. System Dependencies: Install Python 3 and build tools
+RUN apt-get update || : && apt-get install -y \
+    python3 \
+    python3-pip \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+# 3. Set Global Working Directory
+WORKDIR /app
+
+# --- PYTHON SETUP (Optimized) ---
+
+# Copy only the necessary ML files (ignoring heavy datasets)
+# We replicate the structure expected by predict.py
+COPY ml/requirements.txt ./ml/
+COPY ml/scripts/ ./ml/scripts/
+COPY ml/models/ ./ml/models/
+
+# Create a virtual environment for Python
+RUN python3 -m venv /app/ml/ml-env
+ENV PATH="/app/ml/ml-env/bin:$PATH"
+
+# Install Python libraries
+RUN pip install --no-cache-dir -r ml/requirements.txt
+
+# Pre-download NLTK data (stopwords) during build to save time later
+RUN python3 -c "import nltk; nltk.download('stopwords')"
+
+# --- NODE.JS SETUP ---
+
+# Copy the server code
+COPY server/ ./server/
+
+# Install Node dependencies
+WORKDIR /app/server
+RUN npm install
+
+# Build the TypeScript code to JavaScript
+RUN npm run build
+
+# --- STARTUP ---
+EXPOSE 8080
+# Point to the compiled JS file
+CMD ["node", "dist/server.js"]

@@ -1,0 +1,23 @@
+# Python
+ml/ml-env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# ml
+ml/datasets
