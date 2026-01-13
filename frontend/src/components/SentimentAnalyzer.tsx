@@ -77,7 +77,7 @@ function SentimentAnalyzer() {
   }, [text]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground font-geist-mono">
+    <div className="h-dvh bg-background text-foreground font-geist-mono relative">
       {/* Header */}
       <header className="border-b border-border/50 px-4 py-6 sm:px-6">
         <div className="max-w-2xl mx-auto flex items-start justify-between">
@@ -166,6 +166,23 @@ function SentimentAnalyzer() {
           </div>
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="absolute bottom-5 w-full">
+        <div className="max-w-2xl mx-auto text-center">
+          <p className="text-xs text-muted-foreground">
+            Made with ❤️ by{" "}
+            <a
+              href="https://github.com/shozabali06"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground hover:text-primary transition-colors underline underline-offset-4"
+            >
+              Shozab
+            </a>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
