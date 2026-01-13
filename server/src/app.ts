@@ -14,6 +14,15 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
+// Root endpoint
+app.get('/', (req, res) => {
+    res.json({
+        message: 'sentimentle server is running',
+        environment: process.env.NODE_ENV || 'development',
+        timestamp: new Date().toISOString()
+    });
+});
+
 app.use('/api/', apiLimiter);
 
 app.use('/api/', analysisRoutes);
