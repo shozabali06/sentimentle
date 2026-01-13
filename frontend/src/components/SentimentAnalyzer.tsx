@@ -1,6 +1,6 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "./ui/button";
-import { type SentimentResult } from "./SentimentOutput";
+import { type SentimentResult } from "./SentimentOutputV3";
 import { ModeToggle } from "./mode-toggle";
 import { useState, useEffect } from "react";
 import SentimentOutputV3 from "./SentimentOutputV3";
