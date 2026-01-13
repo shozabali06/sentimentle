@@ -14,7 +14,7 @@ const pythonExecutablePath = process.env.NODE_ENV === 'production'
         ? path.join(projectRoot, 'ml', 'ml-env', 'Scripts', 'python.exe')
         : 'python';
 
-const pythonScriptPath = process.env.NODE_ENV === 'production' ? path.join(projectRoot, 'app', 'ml', 'scripts', 'predict.py') : path.join(projectRoot, 'ml', 'scripts', 'predict.py');
+const pythonScriptPath = path.join(projectRoot, 'ml', 'scripts', 'predict.py');
 
 export function analyzeSentiment(text: string): Promise<string> {
     return new Promise((resolve, reject) => {
