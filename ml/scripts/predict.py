@@ -33,6 +33,11 @@ except FileNotFoundError:
 
 # Pre-compile regex and load stop words for speed
 stop_words = set(stopwords.words('english'))
+# --- IMPROVEMENT: Preserve negation words (same as training) ---
+negation_words = {'not', 'no', 'never', 'neither', 'nor', 'none', "n't", 'cannot', 
+                  "don't", "doesn't", "didn't", "won't", "shouldn't", "couldn't", 
+                  "wasn't", "weren't", "isn't", "aren't"}
+final_stopwords = stop_words - negation_words
 stemmer = PorterStemmer()
 # Regex to remove noise: URLs, @mentions, and non-alphanumeric characters
 noise_regex = re.compile(r'(@[A-Za-z0-9]+)|(https?://[A-Za-z0-9./]+ )|([^A-Za-z\s])')
@@ -41,6 +46,7 @@ def preprocess_text(text):
     """
     The same preprocessing function used during model training.
     This is crucial for getting accurate predictions.
+    IMPORTANT: Preserves negation words to match training preprocessing.
     """
     # 1. Convert to lowercase
     text = text.lower()
@@ -48,10 +54,11 @@ def preprocess_text(text):
     text = noise_regex.sub(' ', text)
     # 3. Tokenize (split into words)
     words = text.split()
-    # 4. Remove stop words and apply stemming
-    processed_words = [stemmer.stem(word) for word in words if word not in stop_words]
+    # 4. Remove stop words (but preserve negation words) and apply stemming
+    processed_words = [stemmer.stem(word) for word in words if word in negation_words or word not in final_stopwords]
     
     return " ".join(processed_words)
+
 
 def predict_sentiment(text):
     """
