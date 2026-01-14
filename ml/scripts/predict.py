@@ -13,8 +13,8 @@ from nltk.stem import PorterStemmer
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 # Go up one level from 'ml' to the root, then into 'ml/models'
 PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
-MODEL_PATH = os.path.join(PROJECT_ROOT, 'ml', 'models', 'sentiment_model.pkl')
-VECTORIZER_PATH = os.path.join(PROJECT_ROOT, 'ml', 'models', 'vectorizer.pkl')
+MODEL_PATH = os.path.join(PROJECT_ROOT, 'ml', 'models', 'sentiment_model_v3.pkl')
+VECTORIZER_PATH = os.path.join(PROJECT_ROOT, 'ml', 'models', 'vectorizer_v3.pkl')
 
 try:
     nltk.data.find('corpora/stopwords.zip')

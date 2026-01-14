@@ -1,0 +1,126 @@
+================================================================================
+SENTIMENT ANALYSIS TEST REPORT
+================================================================================
+Generated: 2026-01-14 19:50:25
+
+SUMMARY
+--------------------------------------------------------------------------------
+Total Tests: 15
+Correct Predictions: 12
+Accuracy: 80.00%
+
+================================================================================
+CATEGORY: EASY WINS - BASELINE
+================================================================================
+Tests: 4 | Correct: 4 | Accuracy: 100.00%
+
+Test 1: [PASS]
+  Text: Absolutely loved this! The quality is top-notch and shipping was incredibly fast. Highly recommended.
+  Expected: positive
+  Predicted: positive
+
+Test 2: [PASS]
+  Text: Five stars. Best investment I've made all year. Works exactly as described.
+  Expected: positive
+  Predicted: positive
+
+Test 3: [PASS]
+  Text: Terrible experience. The item arrived broken and customer service was completely useless.
+  Expected: negative
+  Predicted: negative
+
+Test 4: [PASS]
+  Text: Waste of money. Do not buy this. It stopped working after two days.
+  Expected: negative
+  Predicted: negative
+
+================================================================================
+CATEGORY: NEGATION TRAP
+================================================================================
+Tests: 2 | Correct: 1 | Accuracy: 50.00%
+
+Test 1: [PASS]
+  Text: The plot was not good at all, despite the hype.
+  Expected: negative
+  Predicted: negative
+
+Test 2: [FAIL]
+  Text: I had no issues with the installation process.
+  Expected: positive
+  Predicted: negative
+  [MISMATCH] Expected 'positive' but got 'negative'
+
+================================================================================
+CATEGORY: MIXED SENTIMENT
+================================================================================
+Tests: 3 | Correct: 3 | Accuracy: 100.00%
+
+Test 1: [PASS]
+  Text: The screen is amazing and the battery life is great, but the software is buggy and crashes constantly.
+  Expected: negative
+  Predicted: negative
+
+Test 2: [PASS]
+  Text: It's a bit expensive for what you get, but the build quality makes up for it eventually.
+  Expected: positive
+  Predicted: positive
+
+Test 3: [PASS]
+  Text: I really wanted to like this because the design is beautiful, but it is just too uncomfortable to use for long periods.
+  Expected: negative
+  Predicted: negative
+
+================================================================================
+CATEGORY: SARCASM
+================================================================================
+Tests: 2 | Correct: 1 | Accuracy: 50.00%
+
+Test 1: [FAIL]
+  Text: Great, another update that breaks everything. Just what I needed today.
+  Expected: negative
+  Predicted: positive
+  [MISMATCH] Expected 'negative' but got 'positive'
+
+Test 2: [PASS]
+  Text: Oh brilliant. The battery lasts a whole 20 minutes. Groundbreaking technology.
+  Expected: negative
+  Predicted: negative
+
+================================================================================
+CATEGORY: SHORT & CONTEXT-DEPENDENT
+================================================================================
+Tests: 4 | Correct: 3 | Accuracy: 75.00%
+
+Test 1: [PASS]
+  Text: Meh.
+  Expected: negative
+  Predicted: negative
+
+Test 2: [PASS]
+  Text: Solid.
+  Expected: positive
+  Predicted: positive
+
+Test 3: [FAIL]
+  Text: Refunded.
+  Expected: negative
+  Predicted: positive
+  [MISMATCH] Expected 'negative' but got 'positive'
+
+Test 4: [PASS]
+  Text: Steal.
+  Expected: positive
+  Predicted: positive
+
+================================================================================
+DETAILED STATISTICS BY CATEGORY
+================================================================================
+Easy Wins - Baseline          : 4/4 (100.0%)
+Negation Trap                 : 1/2 (50.0%)
+Mixed Sentiment               : 3/3 (100.0%)
+Sarcasm                       : 1/2 (50.0%)
+Short & Context-Dependent     : 3/4 (75.0%)
+
+================================================================================
+END OF REPORT
+================================================================================
