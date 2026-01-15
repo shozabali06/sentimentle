@@ -1,18 +1,23 @@
 import { useState, useEffect, useMemo } from "react";
 import { Typewriter, Cursor } from "react-simple-typewriter";
 
+// Interface for the sentiment result
 export interface SentimentResult {
   text: string;
   sentiment: "positive" | "negative";
 }
 
+// Interface for the props
 interface SentimentOutputV3Props {
   result: SentimentResult;
 }
 
 function SentimentOutputV3({ result }: SentimentOutputV3Props) {
+  // State for the active line index
   const [activeLineIndex, setActiveLineIndex] = useState(0);
+  // State for the completed lines
   const [completedLines, setCompletedLines] = useState<string[]>([]);
+  // State for the completion status
   const [isComplete, setIsComplete] = useState(false);
 
   const isPositive = result.sentiment === "positive";
@@ -20,6 +25,8 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
   const moodEmoji = isPositive ? ":)" : ":(";
   const cursorColor = statusColor;
 
+  // Lines to be displayed
+  // Memoized lines to avoid unnecessary re-renders
   const lines = useMemo(() => [
     "> initializing sentiment_module... OK",
     "> parsing input... DONE",
@@ -40,17 +47,19 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
   useEffect(() => {
     if (isComplete || activeLineIndex >= lines.length) return;
 
+    // Get the current line to be displayed
     const currentLine = lines[activeLineIndex];
     // Calculate time needed to type the current line
     const typingTime = currentLine.length * typeSpeed;
     
     // Set timeout to move to next line after typing completes
     const timer = setTimeout(() => {
+      // If not the last line, add the current line to the completed lines and move to the next line
       if (activeLineIndex < lines.length - 1) {
         setCompletedLines((prev) => [...prev, currentLine]);
         setActiveLineIndex((prev) => prev + 1);
       } else {
-        // Last line completed
+        // If the last line is completed, add the current line to the completed lines and set the completion status to true
         setCompletedLines((prev) => [...prev, currentLine]);
         setIsComplete(true);
       }
@@ -59,6 +68,7 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
     return () => clearTimeout(timer);
   }, [activeLineIndex, isComplete, lines]);
 
+  // Get the color of the line based on the line type
   const getLineColor = (line: string) => {
     const isStatusLine = line.startsWith("[STATUS]:");
     const isMoodLine = line.startsWith("[MOOD]:");
@@ -71,6 +81,7 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
         {/* Display completed lines */}
         {completedLines.map((line, index) => {
           const isMoodLine = line.startsWith("[MOOD]:");
+          // If the line is a mood line, add the mood emoji and the cursor
           if (isMoodLine) {
             // Split the MOOD line to add Cursor after moodEmoji
             const moodPrefix = "[MOOD]:   ";
@@ -81,6 +92,7 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
               </div>
             );
           }
+          // If the line is not a mood line, just return the line
           return (
             <div key={index} className={getLineColor(line)}>
               {line}

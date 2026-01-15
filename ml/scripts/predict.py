@@ -16,9 +16,10 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(SCRIPT_DIR))
 MODEL_PATH = os.path.join(PROJECT_ROOT, 'ml', 'models', 'sentiment_model_v3.pkl')
 VECTORIZER_PATH = os.path.join(PROJECT_ROOT, 'ml', 'models', 'vectorizer_v3.pkl')
 
+# Download the stopwords corpus if it's not already downloaded
 try:
     nltk.data.find('corpora/stopwords.zip')
-except LookupError:
+except LookupError: # If the stopwords corpus is not found, download it
     nltk.download('stopwords', quiet=True)
 
 # --- Global variables for efficiency ---
@@ -42,6 +43,7 @@ stemmer = PorterStemmer()
 # Regex to remove noise: URLs, @mentions, and non-alphanumeric characters
 noise_regex = re.compile(r'(@[A-Za-z0-9]+)|(https?://[A-Za-z0-9./]+ )|([^A-Za-z\s])')
 
+# Preprocess the text
 def preprocess_text(text):
     """
     The same preprocessing function used during model training.

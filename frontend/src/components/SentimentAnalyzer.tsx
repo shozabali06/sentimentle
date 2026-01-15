@@ -48,12 +48,14 @@ function SentimentAnalyzer() {
     }
   };
 
+  // Handle Enter key to analyze sentiment
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       analyzeSentiment();
     }
   };
 
+  // Clear the result and reset the textarea
   const handleClear = () => {
     setResult(null);
     setText("");
