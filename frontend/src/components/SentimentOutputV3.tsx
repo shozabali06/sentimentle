@@ -4,7 +4,8 @@ import { Typewriter, Cursor } from "react-simple-typewriter";
 // Interface for the sentiment result
 export interface SentimentResult {
   text: string;
-  sentiment: "positive" | "negative";
+  sentiment: "positive" | "negative" | "neutral";
+  confidence: number;
 }
 
 // Interface for the props
@@ -21,19 +22,25 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
   const [isComplete, setIsComplete] = useState(false);
 
   const isPositive = result.sentiment === "positive";
-  const statusColor = isPositive ? "text-green-500 dark:text-green-400" : "text-red-500 dark:text-red-400";
-  const moodEmoji = isPositive ? ":)" : ":(";
+  const isNeutral = result.sentiment === "neutral";
+  const statusColor = isNeutral
+    ? "text-amber-500 dark:text-amber-400"
+    : isPositive
+      ? "text-green-500 dark:text-green-400"
+      : "text-red-500 dark:text-red-400";
+  const moodEmoji = isNeutral ? ":|" : isPositive ? ":)" : ":(";
   const cursorColor = statusColor;
+  const confidencePct = Math.round(result.confidence * 100);
 
   // Lines to be displayed
-  // Memoized lines to avoid unnecessary re-renders
   const lines = useMemo(() => [
     "> initializing sentiment_module... OK",
     "> parsing input... DONE",
     "> calculating score...",
     `[STATUS]: ${result.sentiment.toUpperCase()}`,
+    `[CONFIDENCE]: ${confidencePct}%`,
     `[MOOD]:   ${moodEmoji}`,
-  ], [result.sentiment]);
+  ], [result.sentiment, result.confidence]);
 
   const typeSpeed = 50;
 
@@ -71,8 +78,9 @@ function SentimentOutputV3({ result }: SentimentOutputV3Props) {
   // Get the color of the line based on the line type
   const getLineColor = (line: string) => {
     const isStatusLine = line.startsWith("[STATUS]:");
+    const isConfidenceLine = line.startsWith("[CONFIDENCE]:");
     const isMoodLine = line.startsWith("[MOOD]:");
-    return isStatusLine || isMoodLine ? statusColor : "text-muted-foreground";
+    return isStatusLine || isConfidenceLine || isMoodLine ? statusColor : "text-muted-foreground";
   };
 
   return (

@@ -20,12 +20,11 @@ router.post('/analyze-text', sentimentLimiter, async (req: Request, res: Respons
     }
 
     try {
-        // Analyze the sentiment of the text
-        const sentiment = await analyzeSentiment(text);
-        // Return the sentiment of the text
+        const { sentiment, confidence } = await analyzeSentiment(text);
         res.json({
-            text: text,
-            sentiment: sentiment
+            text,
+            sentiment,
+            confidence
         });
     } catch (error) {
         // If the error is an instance of Error, log the error message and return a 500 error

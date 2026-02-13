@@ -1,6 +1,7 @@
 # server/predict.py
 
 import sys
+import json
 import joblib
 import re
 import os
@@ -64,36 +65,39 @@ def preprocess_text(text):
 
 def predict_sentiment(text):
     """
-    Takes raw text, preprocesses it, and returns the model's prediction.
+    Takes raw text, preprocesses it, and returns sentiment and confidence.
+    Uses predict_proba; if positive-class probability is between 0.4 and 0.6, returns 'neutral'.
     """
     # Preprocess the new text
     processed_text = preprocess_text(text)
     
     # Transform the text using the loaded TF-IDF vectorizer
-    # The vectorizer expects a list of documents, so we pass [processed_text]
     text_vector = vectorizer.transform([processed_text])
     
-    # Predict using the loaded model
-    prediction = model.predict(text_vector)
+    # Get class probabilities [prob_neg, prob_pos] (order depends on model.classes_)
+    proba = model.predict_proba(text_vector)[0]
+    classes = model.classes_
+    idx_pos = list(classes).index('positive') if 'positive' in classes else 1
+    prob_positive = float(proba[idx_pos])
     
-    # The model returns an array (e.g., ['positive']), so we return the first element
-    return prediction[0]
+    # Neutral if probability is between 0.4 and 0.6
+    if 0.4 <= prob_positive <= 0.6:
+        sentiment = 'neutral'
+        # Confidence for neutral: how close to 0.5 (1.0 at 0.5, 0.8 at 0.4/0.6)
+        confidence = round(1.0 - 2 * abs(0.5 - prob_positive), 2)
+    else:
+        sentiment = 'positive' if prob_positive > 0.5 else 'negative'
+        confidence = round(max(prob_positive, 1 - prob_positive), 2)
+    
+    return {'sentiment': sentiment, 'confidence': confidence}
 
 # --- Main execution block ---
 if __name__ == '__main__':
-    # The script expects exactly one command-line argument (the text)
     if len(sys.argv) > 1:
-        # sys.argv[0] is the script name, sys.argv[1] is the first argument
         input_text = sys.argv[1]
-        
-        # Make the prediction
-        sentiment = predict_sentiment(input_text)
-        
-        # Print the result to standard output.
-        # This is how Node.js will get the result.
-        print(sentiment)
+        result = predict_sentiment(input_text)
+        print(json.dumps(result))
     else:
-        # If no text is provided, print an error to stderr
         print("Error: No input text provided.", file=sys.stderr)
         sys.exit(1)
 
