@@ -90,6 +90,7 @@ function SentimentAnalyzer() {
             <p className="text-sm text-muted-foreground mt-1">
               analyze the sentiment of your text
             </p>
+            <p className="text-xs italic opacity-50 text-muted-foreground mt-1">optimized for product reviews and social media</p>
           </div>
           <ModeToggle />
         </div>
